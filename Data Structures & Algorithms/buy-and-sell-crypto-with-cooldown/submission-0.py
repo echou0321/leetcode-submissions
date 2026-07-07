@@ -1,0 +1,21 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = {}
+        n = len(prices)
+
+        def dfs(i, buying):
+            if (i, buying) in dp:
+                return dp[i, buying]
+            if i >= n:
+                return 0
+            if buying:
+                buy = dfs(i + 1, not buying) - prices[i]
+                cd = dfs(i + 1, buying)
+                dp[i, buying] = max(cd, buy)
+            else:
+                sell = dfs(i + 2, not buying) + prices[i]
+                cd = dfs(i + 1, buying)
+                dp[i, buying] = max(cd, sell)
+            return dp[i, buying]
+        return dfs(0, True)
+
